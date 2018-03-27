@@ -1,0 +1,88 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Data.Entity.Core.Objects;
+using myproject.Models;
+namespace myproject.Models
+{
+    public class projectController : Controller
+    {
+        // GET: project
+        public ActionResult add()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult add(mytable_project p)
+        {
+            DB06TMS170_1718Entities1 db = new DB06TMS170_1718Entities1();
+            ObjectParameter obj = new ObjectParameter("id",0);
+          //  p.last_upd = DateTime.Now;
+            db.add_subscriber_project(obj, p.name, p.ssn, p.sim_no, p.age, p.contact, p.email, p.addr, p.city, p.pincode, p.balance);
+
+            int sid = Convert.ToInt32(obj.Value);
+            if (sid == 0)
+            { Response.Write("<script>alert('Error!!Unsuccessful Registration...')</script>");
+                Environment.Exit(0);
+            }
+            else
+            Response.Write("<script>alert('Subscriber Added Successfully!!Subscriber Id=SUBID00"+sid +"     Password=Pass@"+sid +"')</script>");
+            return View();
+        }
+
+
+
+        public ActionResult view()
+        { DB06TMS170_1718Entities1 db = new DB06TMS170_1718Entities1();
+            var v = db.viewdetails_project2().ToList();
+            return View("view", v);
+        }
+
+        public ActionResult update()
+        {
+          
+            return View("add");
+        }
+
+        [HttpPost]
+        public ActionResult update(string id)
+        {
+            if (ModelState.IsValid)
+            {
+                DB06TMS170_1718Entities1 db = new DB06TMS170_1718Entities1();
+                mytable_project o = new mytable_project();
+               // int sid =Convert.ToInt32( o.s_id);
+                var v = db.updatedetails_project(id, o.name, o.sim_no, o.age, o.contact, o.email, o.addr, o.city, o.pincode, o.last_upd, o.balance);
+                Response.Write("<script>alert('UPDATED SUCCESSFULLY!!'</script>");
+            }
+
+                return View();
+        }
+        
+        public ActionResult delete(string id)
+        {
+            DB06TMS170_1718Entities1 db = new DB06TMS170_1718Entities1();
+            db.delete_subscriber(id);
+            Response.Write("<script>alert('SUBSCRIBER DELETED SUCCESSFULLY!!'</script>");
+            var v = db.viewdetails_project2().ToList();
+
+            return View("delete",v);
+        }
+
+
+    /*    public ActionResult delete1(string id)
+        {
+            DB06TMS170_1718Entities1 db = new DB06TMS170_1718Entities1();
+            db.delete_subscriber1(id);
+            Response.Write("<script>alert('SUBSCRIBER DELETED SUCCESSFULLY!!'</script>");
+            var v = db.viewdetails_project2().ToList();
+
+            return View("delete", v);
+        }
+
+    */
+    }
+}
