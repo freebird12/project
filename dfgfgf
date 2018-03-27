@@ -1,0 +1,1052 @@
+use db06tms170_1718
+sp_helptext viewdetails_project
+
+select * from tblsubscriber_team6
+sp_help tblsubscriber_team6
+
+
+create table mytable_project
+(id int identity(1000,1) primary key,
+ s_id varchar(50),
+ pass varchar(20),
+ ssn bigint,
+ sim_no bigint,
+ name varchar(30),
+ age int,
+ contact bigint,
+ email varchar(30),
+ addr varchar(20),
+ city varchar(20),
+ pincode int,
+ status1 varchar(10) not null default 'Active',
+ last_upd datetime default getdate(),
+ balance int )
+
+  drop  table mytable_project
+
+create procedure add_subscriber_project
+@id int out,
+@name varchar(20),
+@ssn bigint,
+@sim_no bigint,
+@age int,
+@contact bigint,
+@email varchar(20),
+@addr varchar(20),
+@city varchar(20),
+@pincode int,
+--@last_upd date,
+@balance int
+as 
+begin
+declare @s_id varchar(50)
+declare @pass varchar(50)
+insert into mytable_project(s_id,pass,ssn,sim_no,name,age,contact,email,addr,city,pincode,balance)
+values(@s_id,@pass,@ssn,@sim_no,@name,@age,@contact,@email,@addr,@city,@pincode,@balance)
+set @id=@@IDENTITY
+set @s_id='SUBID00'+convert(varchar(30),@id)
+print @s_id
+set @pass='Pass@'+convert(varchar(20),@id)
+update mytable_project
+set s_id=@s_id,
+pass=@pass
+where id=@id
+end
+
+
+
+drop procedure add_subscriber_project
+
+
+create procedure viewdetails_project2
+as
+begin
+select s_id,name,ssn,sim_no,age,contact,email,addr,city,pincode,status1,last_upd,balance 
+from mytable_project
+end
+
+drop procedure  
+execute viewdetails_project
+
+
+alter procedure updatedetails_project
+@sid varchar(20),
+@name varchar(20),
+@sim_no bigint,
+@age int,
+@contact bigint,
+@email varchar(20),
+@addr varchar(20),
+@city varchar(20),
+@pincode int,
+@last_upd date,
+@balance int
+ as
+begin
+update mytable_project1
+set name=@name,
+sim_no=@sim_no ,
+age=@age ,
+contact=@contact ,
+email=@email,
+addr=@addr ,
+city=@city,
+pincode=@pincode,
+last_upd=getdate(),
+balance=@balance
+where s_id=@sid;
+end
+
+drop procedure updatedetails_project1
+
+select *
+from mytable_project
+
+alter procedure delete_subscriber
+@sid varchar(20)
+as
+begin
+select *
+from mytable_project
+where s_id=@sid
+--delete 
+--from mytable_project
+--where s_id=@sid
+update mytable_project
+set status1='DELETED'
+where s_id=@sid
+end
+
+
+create procedure delete_subscriber1
+@sid varchar(20)
+as
+begin
+select *
+from tblsubscriber_team6
+where subid=@sid
+update tblsubscriber_team6
+set status='DELETED'
+where subid=@sid
+end
+
+select* 
+from tblsubscriber_team6 
+
+select* 
+from tbluserstore_team6
+
+
+
+33333333333333333333333333333333333333333333333333333333333
+@model IEnumerable<PrepaidTelecomTeam6.Models.uspviewallsub_Result>
+
+@{
+    ViewBag.Title = "ViewAll";
+    Layout = "~/Views/Shared/_LayoutSubExec.cshtml";
+}
+@{
+    var msg = TempData["msg"] ?? string.Empty;
+}
+<script type="text/javascript">
+    var msg='@msg';
+    if(msg)
+        alert(msg);
+</script>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ViewAll</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Register new Subscriber", "AddSubscriber")
+    </p>
+    @using (Html.BeginForm())
+    {
+        <h4>SEARCH BY SID</h4>
+        <table class="table">
+
+            <tr>
+                <th>SUBID</th>
+                <td>@Html.DropDownList("subid", new SelectList(ViewBag.sublist, "subid", "subid"))</td>
+
+                <td><input type="submit" value="SEARCH" formaction="searchbyid" /></td>
+            </tr>
+        </table>
+        <style>
+            table #table {
+                border: groove;
+            }
+
+            thead {
+                background-color: aliceblue;
+            }
+
+            th, td {
+                padding: 15px;
+            }
+        </style>
+        <br />
+        <h4>SEARCH BY SIM NO</h4>
+        <table class="table">
+
+            <tr>
+                <th>SIM NO</th>
+                <td>@Html.DropDownList("simno", new SelectList(ViewBag.sublist, "simno", "simno"))</td>
+
+                <td><input type="submit" value="SEARCH" formaction="searchbysim" style="font-size:7pt;color:white;background-color:green;border:2px solid #336600;padding:3px" /></td>
+            </tr>
+        </table>
+        <style>
+            table #table1 {
+                border: groove;
+            }
+
+            thead {
+                background-color: aliceblue;
+            }
+
+            th, td {
+                padding: 15px;
+            }
+        </style>
+        <br />
+    }
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.subid)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.password)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.ssn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.simno)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.sname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.age)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.contactno)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.emailid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.addr1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.addr2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.state)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.city)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.pincode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.msg)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastUpdated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.balance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.execid)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.subid)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.password)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.ssn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.simno)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.age)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.contactno)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.emailid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.addr1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.addr2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.state)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.city)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.pincode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.msg)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastUpdated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.balance)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.execid)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                    @*@Html.ActionLink("Details", "Details", new { id = item.id }) |*@
+                    @Html.ActionLink("Delete", "Delete", new { id = item.id },
+                   new { onclick = "return confirm('Are you sure,you wish to delete this subscriber?');" })
+                </td>
+            </tr>
+        }
+
+    </table>
+</body>
+</html>
+<style>
+    table #table1 {
+        border: groove;
+    }
+
+    thead {
+        background-color: aliceblue;
+    }
+
+    th, td {
+        padding: 15px;
+    }
+</style>
+888888888888888888888888888888888888888888888888888888888888888888888
+@model PrepaidTelecomTeam6.Models.tblsubscriber_team6
+
+@{
+    ViewBag.Title = "AddSubscriber";
+    Layout = "~/Views/Shared/_LayoutSubExec.cshtml";
+}
+
+<h2>AddSubscriber</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>tblsubscriber_team6</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ssn, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ssn, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ssn, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.simno, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.simno, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.simno, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.sname, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.sname, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.sname, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.age, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.age, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.age, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.contactno, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.contactno, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.contactno, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.emailid, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.emailid, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.emailid, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.addr1, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.addr1, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.addr1, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.addr2, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.addr2, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.addr2, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.state, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.state, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.state, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.city, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.city, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.city, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.pincode, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.pincode, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.pincode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="ADD" class="btn btn-default"  style="font-size:15pt;color:white;background-color:green;border:2px solid #336600;padding:3px"/>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Home", "Index")
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+8888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
+using PrepaidTelecomTeam6.Models;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Security;
+
+namespace PrepaidTelecomTeam6.Controllers
+{
+    public class SubExecutiveController : Controller
+    {
+        DB06TMS170_1718Entities db = new DB06TMS170_1718Entities();
+        // GET: SubExecutive
+        public ActionResult Index()
+        {
+            try
+            {
+                if (Session["username"].ToString() == "")
+                {
+                    return RedirectToAction("Login", "Logon");
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Login", "Logon");
+            }
+            return View();
+        }
+
+        public ActionResult AddSubscriber()
+        {
+            try
+            {
+                if (Session["username"].ToString() == "")
+                {
+                    return RedirectToAction("Login", "Logon");
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Login", "Logon");
+            }
+            return View();
+        }
+        [HttpPost]
+        public ActionResult AddSubscriber(tblsubscriber_team6 sub)
+        {
+            if (ModelState.IsValid)
+            {
+                string pass = Membership.GeneratePassword(10, 1);
+                string execid = Session["execid"].ToString();
+                string userid = Session["userid"].ToString();
+                ObjectParameter param = new ObjectParameter("subid", typeof(string));
+                db.uspaddsub_team6(param, pass, sub.ssn, sub.simno, sub.sname, sub.age, sub.contactno, sub.emailid, sub.addr1, sub.addr2, sub.state, sub.city, sub.pincode, userid);
+                string subid = param.Value.ToString();
+                if (subid.Equals("false"))
+                {
+                    Response.Write("<script>alert('Registration unsuccessfull SSN NO. And Sim no. must be unique')</script>");
+                    return View();
+                }
+                else
+                {
+                    TempData["msg"] = "Registration Succesfull with subscriber id = " + subid + " password = " + pass;
+                    return RedirectToAction("Index");
+                }
+            }
+            Response.Write("<script>alert('Registration unsuccessfull')</script>");
+            return View();
+        }
+        public ActionResult Logout()
+        {
+            Session["username"] = "";
+            return RedirectToAction("Login", "Logon");
+
+        }
+
+        public ActionResult ChangePassword()
+        {
+            try
+            {
+                if (Session["username"].ToString() == "")
+                {
+                    return RedirectToAction("Login", "Logon");
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Login", "Logon");
+            }
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ChangePassword(changepwd user)
+        {
+            if (ModelState.IsValid)
+            {
+
+
+                string userid = Session["userid"].ToString();
+                ObjectParameter param = new ObjectParameter("flag", typeof(int));
+                db.uspchangepwd(userid, user.oldpassword, user.password, param, "SUBSCRIBER-ACCOUNT EXECUTIVE");
+                int flag = Convert.ToInt32(param.Value);
+                if (flag > 0)
+                {
+                    TempData["msg"] = "Password Changed Successfully";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    Response.Write("<script>alert('Old password is incorrect')</script>");
+                    return View();
+
+                }
+            }
+            Response.Write("<script>alert('Password change unsuccessfull')</script>");
+            return View();
+        }
+        public ActionResult ViewAll()
+        {
+            try
+            {
+                if (Session["username"].ToString() == "")
+                {
+                    return RedirectToAction("Login", "Logon");
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Login", "Logon");
+            }
+            ViewBag.sublist = db.uspviewallsub().ToList();
+            List<uspviewallsub_Result> lst = new List<uspviewallsub_Result>();
+            lst = db.uspviewallsub().ToList();
+            return View(lst);
+        }
+        public ActionResult searchbyid(FormCollection form)
+        {
+            ViewBag.sublist = db.uspviewallsub().ToList();
+            string sid = form["subid"];
+            List<uspviewallsub_Result> lst = new List<uspviewallsub_Result>();
+            lst = db.uspviewallsub().ToList().FindAll(a => a.subid == sid);
+            return View("ViewAll", lst);
+
+        }
+        public ActionResult searchbysim(FormCollection form)
+        {
+            ViewBag.sublist = db.uspviewallsub().ToList();
+            long sim = Convert.ToInt64(form["simno"]);
+            List<uspviewallsub_Result> lst = new List<uspviewallsub_Result>();
+            lst = db.uspviewallsub().ToList().FindAll(a => a.simno == sim);
+            return View("ViewAll", lst);
+
+        }
+
+
+        public ActionResult Edit(int? id)
+        {
+            try
+            {
+                if (Session["username"].ToString() == "")
+                {
+                    return RedirectToAction("Login", "Logon");
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Login", "Logon");
+            }
+            
+        uspviewallsubbyid_1_Result lst = new uspviewallsubbyid_1_Result();
+            if (id != null)
+            {
+                lst = db.uspviewallsubbyid_1(id).FirstOrDefault();
+            }
+            return View(lst);
+        }
+        [HttpPost]
+        public ActionResult Edit(tblsubscriber_team6 sub)
+        {
+            if (ModelState.IsValid)
+            {
+                db.uspeditsub(sub.subid, sub.sname, sub.age, sub.contactno, sub.emailid, sub.addr1, sub.addr2, sub.state, sub.city, sub.pincode);
+                db.SaveChanges();
+                TempData["msg"] = "Subscriber Details updated successfully";
+                return RedirectToAction("ViewAll");
+            }
+            else
+            {
+                Response.Write("<script>alert('Editing unsuccessfull')</script>");
+                uspviewallsubbyid_1_Result lst = new uspviewallsubbyid_1_Result();
+                lst = db.uspviewallsubbyid_1(sub.id).FirstOrDefault();
+                return View(lst);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+        public ActionResult delete()
+        {
+
+            try
+            {
+                if (Session["username"].ToString() == "")
+                {
+                    return RedirectToAction("Login", "Logon");
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Login", "Logon");
+            }
+            db.uspviewallsub().ToList();
+
+            return View();
+            }
+
+
+
+    [HttpPost]
+    public ActionResult delete(string id)
+    {
+
+        if (ModelState.IsValid)
+        {
+
+            db.delete_subscriber1(id);
+            db.SaveChanges();
+            TempData["msg"] = "SUBSCRIBER DELETED SUCCESSFULLY!!";
+            return RedirectToAction("ViewAll");
+        }
+        else
+        {
+            Response.Write("<script>alert('Deletion unsuccessfull')</script>");
+        }
+        
+
+           return View("delete");
+}
+
+
+    }
+}
+888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
+using PrepaidTelecomTeam6.Models;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace PrepaidTelecomTeam6.Controllers
+{
+    public class BillExececutiveController : Controller
+    {
+        DB06TMS170_1718Entities db = new DB06TMS170_1718Entities();
+        // GET: BillExececutive
+        public ActionResult Index()
+        {
+            try {
+                if (Session["username"].ToString() == "")
+                {
+                    return RedirectToAction("Login", "Logon");
+                }
+            }catch(Exception e)
+            {
+                return RedirectToAction("Login", "Logon");
+            }
+            return View();
+        }
+
+        public ActionResult Recharge()
+        {
+            try
+            {
+                if (Session["username"].ToString() == "")
+                {
+                    return RedirectToAction("Login", "Logon");
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Login", "Logon");
+            }
+            ViewBag.sublst = db.uspgetsubid().ToList();
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Recharge(rechargeamt bill)
+        {
+            ViewBag.sublst = db.uspgetsubid().ToList();
+            if (ModelState.IsValid)
+            {
+                if (bill.amount == null)
+                {
+                    Response.Write("<script>alert('Please Enter Amount')</script>");
+                    return View();
+                }
+                ObjectParameter param = new ObjectParameter("flag", typeof(string));
+                db.usprecharge(bill.subid, bill.amount, param);
+                string status = param.Value.ToString();
+                if (status == "Deleted")
+                {
+                    Response.Write("<script>alert('This subscriber account is Deleted')</script>");
+                    return View();
+                }
+                TempData["msgbill"] = "AMOUNT RECHARGED SUCCESSFULLY";
+                return RedirectToAction("Index");
+            }
+            Response.Write("<script>alert('Recharge unsuccessfull')</script>");
+            return View();
+        }
+        public ActionResult ViewTransaction()
+        {
+            try
+            {
+                if (Session["username"].ToString() == "")
+                {
+                    return RedirectToAction("Login", "Logon");
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Login", "Logon");
+            }
+            ViewBag.sublst = db.uspgetsubid().ToList();
+            return View();
+        }
+        public ActionResult searchbyid(FormCollection form)
+        {
+            try
+            {
+                if (Session["username"].ToString() == "")
+                {
+                    return RedirectToAction("Login", "Logon");
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Login", "Logon");
+            }
+            ViewBag.sublst = db.uspgetsubid().ToList();
+            Session["search"] = 1;
+            string sid = form["subid"];
+            if (sid == "")
+            {
+                TempData["msgbill"] = "Please select sub id";
+                Response.Write("<script>alert('Please select sub id')</script>");
+                return RedirectToAction("ViewTransaction");
+            }
+            //string sid1 = form["subid1"];
+            int num = Convert.ToInt32(form["num"]);
+            // int num1 = Convert.ToInt32(form["num1"]);
+            List<uspshowtransbyid_Result> lst = db.uspshowtransbyid(sid, num).ToList();
+            if (lst.Count == 0)
+            {
+                TempData["msgbill"] = "No account exists for this subscriber";
+                Response.Write("<script>alert('No account exists for this subscriber')</script>");
+                return RedirectToAction("ViewTransaction");
+            }
+
+            return View(lst);
+
+        }
+        public ActionResult searchbydate(FormCollection form)
+        {
+            try
+            {
+                if (Session["username"].ToString() == "")
+                {
+                    return RedirectToAction("Login", "Logon");
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Login", "Logon");
+            }
+            ViewBag.sublst = db.uspgetsubid().ToList();
+            string sid = form["subid1"];
+            if (sid == "")
+            {
+                TempData["msgbill"] = "Please select sub id";
+                Response.Write("<script>alert('Please select sub id')</script>");
+                return RedirectToAction("ViewTransaction");
+            }
+            Session["search"] = 2;
+            string sdate1 = form["sdate"].ToString();
+            string edate1 = form["edate"].ToString();
+            if (sdate1 == "" || edate1 == "")
+            {
+                TempData["msgbill"] = "Please select start date and end date";
+                Response.Write("<script>alert('Please select sub id')</script>");
+                return RedirectToAction("ViewTransaction");
+            }
+            DateTime sdate = Convert.ToDateTime(form["sdate"]);
+            //string sid1 = form["subid1"];
+            DateTime edate = Convert.ToDateTime(form["edate"]);
+            //int num = Convert.ToInt32(form["edate"]);
+            //int num1 = Convert.ToInt32(form["num1"]);
+            List<uspshowtransbydate_Result> lst = db.uspshowtransbydate(sid, sdate, edate).ToList();
+            if (lst.Count == 0)
+            {
+                TempData["msgbill"] = "No account exists for this subscriber";
+                Response.Write("<script>alert('No account exists for this subscriber')</script>");
+                return RedirectToAction("ViewTransaction");
+            }
+            return View(lst);
+
+        }
+        public ActionResult SearchAccount()
+        {
+            try
+            {
+                if (Session["username"].ToString() == "")
+                {
+                    return RedirectToAction("Login", "Logon");
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Login", "Logon");
+            }
+            ViewBag.sublist = db.uspviewallsub().ToList();
+            ViewBag.acclist = db.uspviewallacc_1().ToList();
+            return View();
+        }
+        public ActionResult searchaccbyid(FormCollection form)
+        {
+            try
+            {
+                if (Session["username"].ToString() == "")
+                {
+                    return RedirectToAction("Login", "Logon");
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Login", "Logon");
+            }
+            ViewBag.sublist = db.uspviewallsub().ToList();
+            ViewBag.acclist = db.uspviewallacc_1().ToList();
+
+            string sid = form["subid"];
+
+            List<uspviewcc_1_Result> lst = db.uspviewcc_1(0, sid, 0, "subid").ToList();
+            if (lst.Count() == 0)
+            {
+                TempData["msgbill"] = "NO ACCOUNT EXISTS FOR THIS SUB ID";
+                return RedirectToAction("SearchAccount");
+            }
+
+            return View(lst);
+
+        }
+        public ActionResult searchaccbysim(FormCollection form)
+        {
+            try
+            {
+                if (Session["username"].ToString() == "")
+                {
+                    return RedirectToAction("Login", "Logon");
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Login", "Logon");
+            }
+            ViewBag.sublist = db.uspviewallsub().ToList();
+            ViewBag.acclist = db.uspviewallacc_1().ToList();
+
+            long sim = Convert.ToInt64(form["simno"]);
+
+            List<uspviewcc_1_Result> lst = db.uspviewcc_1(0, "", sim, "simno").ToList();
+            if (lst.Count() == 0)
+            {
+                TempData["msgbill"] = "NO ACCOUNT EXISTS FOR THIS SIM NO";
+                return RedirectToAction("SearchAccount");
+            }
+            return View(lst);
+
+        }
+        public ActionResult searchaccbyaccid(FormCollection form)
+        {
+
+            try
+            {
+                if (Session["username"].ToString() == "")
+                {
+                    return RedirectToAction("Login", "Logon");
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Login", "Logon");
+            }
+            ViewBag.acclist = db.uspviewallacc_1().ToList();
+            ViewBag.sublist = db.uspviewallsub().ToList();
+            int accid = Convert.ToInt32(form["accid"]);
+
+            List<uspviewcc_1_Result> lst = db.uspviewcc_1(accid, "", 0, "accid").ToList();
+            if (lst.Count() == 0)
+            {
+                TempData["msgbill"] = "NO ACCOUNT EXISTS";
+                return RedirectToAction("SearchAccount");
+            }
+            return View(lst);
+
+        }
+        public ActionResult Logout()
+        {
+            Session["username"] = "";
+            return RedirectToAction("Login", "Logon");
+        }
+
+        public ActionResult ChangePassword()
+        {
+            try
+            {
+                if (Session["username"].ToString() == "")
+                {
+                    return RedirectToAction("Login", "Logon");
+                }
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Login", "Logon");
+            }
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ChangePassword(changepwd user)
+        {
+            if (ModelState.IsValid)
+            {
+
+
+                string userid = Session["userid"].ToString();
+                ObjectParameter param = new ObjectParameter("flag", typeof(int));
+                db.uspchangepwd(userid, user.oldpassword, user.password, param, "BILLING EXECUTIVE");
+                int flag = Convert.ToInt32(param.Value);
+                if (flag > 0)
+                {
+                    TempData["msg"] = "Password Changed Successfully";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    Response.Write("<script>alert('Old password is incorrect')</script>");
+                    return View();
+
+                }
+            }
+            Response.Write("<script>alert('Password change unsuccessfull')</script>");
+            return View();
+        }
+    }
+}
+8888888888888888888888888888888888888888888888888888888888888888888888888
