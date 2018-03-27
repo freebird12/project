@@ -1,0 +1,59 @@
+@model myproject.Models.mytable_project
+@{
+    ViewBag.Title = "add";
+}
+
+<h2>New Subscriber</h2>
+@using (Html.BeginForm())
+{
+<table>
+    <tr>
+        <td>@Html.Label("SSN")</td>
+        <td>@Html.TextBoxFor(s => s.ssn)</td>
+    </tr>
+    <tr>
+        <td>@Html.Label("Sim Number")</td>
+        <td>@Html.TextBoxFor(s => s.sim_no)</td>
+    </tr>
+    <tr>
+        <td>@Html.Label("Name")</td>
+        <td>@Html.TextBoxFor(s => s.name)</td>
+    </tr>
+    <tr>
+        <td>@Html.Label("Age")</td>
+        <td>@Html.TextBoxFor(s => s.age, new { maxlength = 3 })</td>
+    </tr>
+    <tr>
+        <td>@Html.Label("Contact")</td>
+        <td>@Html.TextBoxFor(s => s.contact, new { maxlength = 10 })</td>
+    </tr>
+    <tr>
+        <td>@Html.Label("Email")</td>
+        <td>@Html.TextBoxFor(s => s.email)</td>
+    </tr>
+    <tr>
+        <td>@Html.Label("Address")</td>
+        <td>@Html.TextBoxFor(s => s.addr)</td>
+    </tr>
+    <tr>
+        <td>@Html.Label("City")</td>
+        <td>@Html.TextBoxFor(s => s.city)</td>
+    </tr>
+    <tr>
+        <td>@Html.Label("Pincode")</td>
+        <td>@Html.TextBoxFor(s => s.pincode)</td>
+    </tr>
+    <tr>
+        <td>@Html.Label("Balance")</td>
+        <td>@Html.TextBoxFor(s => s.balance)</td>
+    </tr>
+    <tr></tr>
+    <tr>
+        <td></td>
+        <td><input type="submit" value="Register" /> </td>
+        <td><input type="reset" value="Reset" /></td>
+     
+    </tr>
+</table>
+
+}
