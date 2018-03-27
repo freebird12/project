@@ -1,0 +1,39 @@
+@model  IEnumerable<myproject.Models.viewdetails_project2_Result>
+@{
+    ViewBag.Title = "update";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    WebGrid grid = new WebGrid(Model);
+}
+
+<h2 style="color:aliceblue"></h2>
+
+@grid.GetHtml(
+    tableStyle: "table table-bordered",
+    columns: new[]
+    {
+         grid.Column("s_id","Subscriber Id"),
+        grid.Column("name","Subscriber Name"),
+        grid.Column("ssn","SSN"),
+        grid.Column("sim_no","sim Number"),
+        grid.Column("age","Age"),
+        grid.Column("contact","Contact"),
+        grid.Column("email","Email"),
+        grid.Column("addr","Address"),
+        grid.Column("city","City"),
+        grid.Column("pincode","Pincode"),
+        grid.Column("status1","Status"),
+        grid.Column("last_upd","Last Updated"),
+        grid.Column("balance","Balance"),
+        grid.Column(format: @<text>@Html.ActionLink("EDIT","update",new { id= item.s_id})</text>)
+
+
+
+
+
+    }
+    )
+
+
+
+
+
