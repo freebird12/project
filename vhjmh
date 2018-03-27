@@ -1,0 +1,342 @@
+@model IEnumerable<PrepaidTelecomTeam6.Models.uspviewallsub_Result>
+
+@{
+    ViewBag.Title = "ViewAll";
+    Layout = "~/Views/Shared/_LayoutSubExec.cshtml";
+}
+@{
+    var msg = TempData["msg"] ?? string.Empty;
+}
+<script type="text/javascript">
+    var msg='@msg';
+    if(msg)
+        alert(msg);
+</script>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ViewAll</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Register new Subscriber", "AddSubscriber")
+    </p>
+    @using (Html.BeginForm())
+    {
+        <h4>SEARCH BY SID</h4>
+        <table class="table">
+
+            <tr>
+                <th>SUBID</th>
+                <td>@Html.DropDownList("subid", new SelectList(ViewBag.sublist, "subid", "subid"))</td>
+
+                <td><input type="submit" value="SEARCH" formaction="searchbyid" /></td>
+            </tr>
+        </table>
+        <br />
+        <h4>SEARCH BY SIM NO</h4>
+        <table class="table">
+
+            <tr>
+                <th>SIM NO</th>
+                <td>@Html.DropDownList("simno", new SelectList(ViewBag.sublist, "simno", "simno"))</td>
+
+                <td><input type="submit" value="SEARCH" formaction="searchbysim" /></td>
+            </tr>
+        </table>
+        <br />
+    }
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.subid)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.password)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.ssn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.simno)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.sname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.age)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.contactno)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.emailid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.addr1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.addr2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.state)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.city)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.pincode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.msg)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastUpdated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.balance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.execid)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.subid)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.password)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.ssn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.simno)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.age)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.contactno)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.emailid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.addr1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.addr2)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.state)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.city)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.pincode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.msg)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastUpdated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.balance)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.execid)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                    @*@Html.ActionLink("Details", "Details", new { id = item.id }) |*@
+                    @Html.ActionLink("Delete", "Delete", new { id = item.id },
+                   new { onclick = "return confirm('Are you sure,you wish to delete this subscriber?');" })
+                </td>
+            </tr>
+        }
+
+    </table>
+</body>
+</html>
+
+@model PrepaidTelecomTeam6.Models.tblsubscriber_team6
+
+@{
+    ViewBag.Title = "delete";
+}
+
+<h2>delete</h2>
+
+@using (Html.BeginForm())
+{
+    <table>
+        <tr>
+            <td>@Html.Label("SSN")</td>
+            <td>@Html.DisplayFor(s => s.ssn)</td>
+        </tr>
+        <tr>
+            <td>@Html.Label("Sim Number")</td>
+            <td>@Html.DisplayFor(s => s.simno)</td>
+        </tr>
+        <tr>
+            <td>@Html.Label("Name")</td>
+            <td>@Html.DisplayFor(s => s.sname)</td>
+        </tr>
+        <tr>
+            <td>@Html.Label("Age")</td>
+            <td>@Html.DisplayFor(s => s.age, new { maxlength = 3 })</td>
+        </tr>
+        <tr>
+            <td>@Html.Label("Contact")</td>
+            <td>@Html.DisplayFor(s => s.contactno, new { maxlength = 10 })</td>
+        </tr>
+        <tr>
+            <td>@Html.Label("Email")</td>
+            <td>@Html.DisplayFor(s => s.emailid)</td>
+        </tr>
+        <tr>
+            <td>@Html.Label("Address")</td>
+            <td>@Html.DisplayFor(s => s.addr1)</td>
+        </tr>
+
+
+        <tr>
+            <td>@Html.Label("Address")</td>
+            <td>@Html.DisplayFor(s => s.addr2)</td>
+        </tr>
+
+        <tr>
+            <td>@Html.Label("City")</td>
+            <td>@Html.DisplayFor(s => s.city)</td>
+        </tr>
+        <tr>
+            <td>@Html.Label("Pincode")</td>
+            <td>@Html.DisplayFor(s => s.pincode)</td>
+        </tr>
+        <tr>
+            <td>@Html.Label("Balance")</td>
+            <td>@Html.DisplayFor(s => s.balance)</td>
+        </tr>
+        <tr></tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Delete" /> </td>
+            <td><input type="reset" value="Reset" /></td>
+
+        </tr>
+    </table>
+}
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+</head>
+<body>
+    @{ 
+        var name = Session["username"].ToString();
+    }
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @*@Html.ActionLink("ADD SUBSCRIBER", "AddSubscriber", "SubExecutive", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("INDEX", "Index", "SubExecutive", new { area = "" }, new { @class = "navbar-brand" })*@
+                @Html.ActionLink("WELCOME "+@name+" LOGOUT", "Logout", "SubExecutive", new { area = "" }, new { @class = "navbar-brand" })
+                @*@Html.ActionLink("CHANGE PASSWORD", "ChangePassword", "SubExecutive", new { area = "" }, new { @class = "navbar-brand" })*@
+
+
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav"></ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container body-content">
+        <div class="row">
+            <h1 align="center">WELCOME TO PREPAID TELECOM</h1>
+            <br />
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-md-3">
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="active">
+                        <a href="~/SubExecutive/Index">INDEX</a>
+                    </li>
+                    <li class="active">
+                        <a href="~/SubExecutive/AddSubscriber">ADD SUBSCRIBER</a>
+                    </li>
+                    <li class="active">
+                        <a href="~/SubExecutive/ViewAll">VIEW ALL</a>
+                    </li>
+                    <li class="active">
+                        <a href="~/SubExecutive/ChangePassword">CHANGE PASSWORD</a>
+                    </li>
+                </ul> 
+            </div>
+            <div class="col-xs-12 col-md-9">
+                <div class="row">
+                    @RenderBody()
+                </div>
+
+            </div>
+        </div>
+      
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - TEAM 4 PREPAID TELECOM PROJECT</p>
+        </footer>
+    </div>
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
